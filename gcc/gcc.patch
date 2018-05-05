@@ -1,0 +1,94 @@
+diff -c -r gcc-5.4.0/config.sub gcc-5.4.0_new/config.sub
+*** gcc-5.4.0/config.sub	2015-01-02 10:30:21.000000000 +0100
+--- gcc-5.4.0_new/config.sub	2018-05-05 18:56:00.511303891 +0200
+***************
+*** 1525,1530 ****
+--- 1525,1533 ----
+  		;;
+  	-nacl*)
+  		;;
++     	-ctOS*)
++         	os=-ctOS
++         	;;
+  	-none)
+  		;;
+  	*)
+diff -c -r gcc-5.4.0/gcc/config.gcc gcc-5.4.0_new/gcc/config.gcc
+*** gcc-5.4.0/gcc/config.gcc	2015-09-10 16:17:53.000000000 +0200
+--- gcc-5.4.0_new/gcc/config.gcc	2018-05-05 20:55:44.358193648 +0200
+***************
+*** 879,884 ****
+--- 879,886 ----
+    default_use_cxa_atexit=yes
+    use_gcc_stdint=wrap
+    ;;
++ *-*-ctOS)
++   ;;
+  esac
+  
+  case ${target} in
+***************
+*** 1374,1379 ****
+--- 1376,1384 ----
+  i[34567]86-*-elf*)
+  	tm_file="${tm_file} i386/unix.h i386/att.h dbxelf.h elfos.h newlib-stdint.h i386/i386elf.h"
+  	;;
++ i[34567]86-*-ctOS*)
++     	tm_file="${tm_file} i386/unix.h i386/att.h dbxelf.h elfos.h i386/i386elf.h"
++     	;;
+  x86_64-*-elf*)
+  	tm_file="${tm_file} i386/unix.h i386/att.h dbxelf.h elfos.h newlib-stdint.h i386/i386elf.h i386/x86-64.h"
+  	;;
+diff -c -r gcc-5.4.0/gcc/ginclude/stddef.h gcc-5.4.0_new/gcc/ginclude/stddef.h
+*** gcc-5.4.0/gcc/ginclude/stddef.h	2015-01-05 13:33:28.000000000 +0100
+--- gcc-5.4.0_new/gcc/ginclude/stddef.h	2018-05-05 20:06:02.134294532 +0200
+***************
+*** 210,219 ****
+  #define __size_t
+  #endif
+  #ifndef __SIZE_TYPE__
+! #define __SIZE_TYPE__ long unsigned int
+  #endif
+  #if !(defined (__GNUG__) && defined (size_t))
+! typedef __SIZE_TYPE__ size_t;
+  #ifdef __BEOS__
+  typedef long ssize_t;
+  #endif /* __BEOS__ */
+--- 210,219 ----
+  #define __size_t
+  #endif
+  #ifndef __SIZE_TYPE__
+! #define __SIZE_TYPE__  unsigned int
+  #endif
+  #if !(defined (__GNUG__) && defined (size_t))
+! typedef unsigned int size_t;
+  #ifdef __BEOS__
+  typedef long ssize_t;
+  #endif /* __BEOS__ */
+diff -c -r gcc-5.4.0/libgcc/config.host gcc-5.4.0_new/libgcc/config.host
+*** gcc-5.4.0/libgcc/config.host	2016-05-17 08:17:53.000000000 +0200
+--- gcc-5.4.0_new/libgcc/config.host	2018-05-05 21:00:31.801418665 +0200
+***************
+*** 306,311 ****
+--- 306,314 ----
+  *-*-elf)
+    extra_parts="crtbegin.o crtend.o"
+    ;;
++ *-*-ctOS)
++   extra_parts="crtbegin.o crtend.o"
++   ;;
+  esac
+  
+  case ${host} in
+***************
+*** 559,564 ****
+--- 562,569 ----
+  i[34567]86-*-elf*)
+  	tmake_file="$tmake_file i386/t-crtstuff t-crtstuff-pic t-libgcc-pic"
+  	;;
++ i[34567]86-*-ctOS)
++     	;;
+  x86_64-*-elf*)
+  	tmake_file="$tmake_file i386/t-crtstuff t-crtstuff-pic t-libgcc-pic"
+  	;;
+
