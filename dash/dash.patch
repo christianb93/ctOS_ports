@@ -1,0 +1,15 @@
+diff -c -r dash-0.5.8/src/mkinit.c dash-0.5.8_new/src/mkinit.c
+*** dash-0.5.8/src/mkinit.c	2014-09-28 10:19:32.000000000 +0200
+--- dash-0.5.8_new/src/mkinit.c	2018-05-06 16:29:08.188793721 +0200
+***************
+*** 43,48 ****
+--- 43,51 ----
+   */
+  
+  
++ #undef stat64
++ #undef open64
++ 
+  #include <sys/types.h>
+  #include <stdio.h>
+  #include <stdlib.h>
