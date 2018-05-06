@@ -1,4 +1,4 @@
-diff -c -r -N gcc-5.4.0/config.sub gcc-5.4.0_new/config.sub
+diff -c -N -r gcc-5.4.0/config.sub gcc-5.4.0_new/config.sub
 *** gcc-5.4.0/config.sub	2015-01-02 10:30:21.000000000 +0100
 --- gcc-5.4.0_new/config.sub	2018-05-05 18:56:00.511303891 +0200
 ***************
@@ -13,29 +13,7 @@ diff -c -r -N gcc-5.4.0/config.sub gcc-5.4.0_new/config.sub
   	-none)
   		;;
   	*)
-diff -c -r -N gcc-5.4.0/gcc/config/i386/ctOS.h gcc-5.4.0_new/gcc/config/i386/ctOS.h
-*** gcc-5.4.0/gcc/config/i386/ctOS.h	1970-01-01 01:00:00.000000000 +0100
---- gcc-5.4.0_new/gcc/config/i386/ctOS.h	2018-05-06 13:08:17.903510153 +0200
-***************
-*** 0 ****
---- 1,16 ----
-+ 
-+ /* 
-+  * Tell GCC which files to add during linking - in this order!
-+  */
-+ #undef STARTFILE_SPEC
-+ #define STARTFILE_SPEC "crt0.o%s crtbegin.o%s"
-+ 
-+ #undef ENDFILE_SPEC
-+ #define ENDFILE_SPEC "crtend.o%s"
-+ 
-+ 
-+ /*
-+  * Tell GCC which libraries we want to add as defaults
-+  */
-+ #undef LIB_SPEC
-+ #define LIB_SPEC "-lc"
-diff -c -r -N gcc-5.4.0/gcc/config.gcc gcc-5.4.0_new/gcc/config.gcc
+diff -c -N -r gcc-5.4.0/gcc/config.gcc gcc-5.4.0_new/gcc/config.gcc
 *** gcc-5.4.0/gcc/config.gcc	2015-09-10 16:17:53.000000000 +0200
 --- gcc-5.4.0_new/gcc/config.gcc	2018-05-06 12:46:43.392014771 +0200
 ***************
@@ -61,7 +39,7 @@ diff -c -r -N gcc-5.4.0/gcc/config.gcc gcc-5.4.0_new/gcc/config.gcc
   x86_64-*-elf*)
   	tm_file="${tm_file} i386/unix.h i386/att.h dbxelf.h elfos.h newlib-stdint.h i386/i386elf.h i386/x86-64.h"
   	;;
-diff -c -r -N gcc-5.4.0/gcc/ginclude/stddef.h gcc-5.4.0_new/gcc/ginclude/stddef.h
+diff -c -N -r gcc-5.4.0/gcc/ginclude/stddef.h gcc-5.4.0_new/gcc/ginclude/stddef.h
 *** gcc-5.4.0/gcc/ginclude/stddef.h	2015-01-05 13:33:28.000000000 +0100
 --- gcc-5.4.0_new/gcc/ginclude/stddef.h	2018-05-05 20:06:02.134294532 +0200
 ***************
@@ -87,7 +65,7 @@ diff -c -r -N gcc-5.4.0/gcc/ginclude/stddef.h gcc-5.4.0_new/gcc/ginclude/stddef.
   #ifdef __BEOS__
   typedef long ssize_t;
   #endif /* __BEOS__ */
-diff -c -r -N gcc-5.4.0/libgcc/config.host gcc-5.4.0_new/libgcc/config.host
+diff -c -N -r gcc-5.4.0/libgcc/config.host gcc-5.4.0_new/libgcc/config.host
 *** gcc-5.4.0/libgcc/config.host	2016-05-17 08:17:53.000000000 +0200
 --- gcc-5.4.0_new/libgcc/config.host	2018-05-06 11:20:47.984766617 +0200
 ***************
