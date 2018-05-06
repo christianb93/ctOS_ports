@@ -5,7 +5,7 @@
 # We assume that we are on a system where apt-get source is available
 #
 # This script will build in $CTOS_PREFIX/build and install in 
-# $CTOS_PREFIX/install. The patched source code will be placed in
+# $CTOS_PREFIX/sysroot. The patched source code will be placed in
 # $CTOS_PREFIX/src
 #
 
@@ -28,11 +28,11 @@ then
   exit
 fi
 
-if [ ! -e "$CTOS_PREFIX/install/bin/i686-pc-ctOS-gcc" ]
+if [ ! -e "$CTOS_PREFIX/sysroot/bin/i686-pc-ctOS-gcc" ]
 then
   echo "Are you sure that CTOS_PREFIX is set correctly and that you "
   echo "have successfully GCC there?"
-  echo "I did expect to find $CTOS_PREFIX/install/bin/i686-pc-ctOS-gcc"
+  echo "I did expect to find $CTOS_PREFIX/sysroot/bin/i686-pc-ctOS-gcc"
   exit
 fi
 
@@ -42,7 +42,7 @@ echo "-------------------------------------------------------------------"
 echo "I will use the following directories:"
 echo "Patched source will be placed in $CTOS_PREFIX/src/"
 echo "I will build in                  $CTOS_PREFIX/build"
-echo "I will install in                $CTOS_PREFIX/install"
+echo "I will install in                $CTOS_PREFIX/sysroot"
 echo "Sysroot will be                  $CTOS_PREFIX/sysroot"
 echo "All directories will be created if they do not exist yet"
 read -p "Ok and proceed? (Y/n): "
@@ -78,12 +78,20 @@ patch -p0 < $PATCH_DIR/dash.patch
 # Running actual build
 #
 echo "Doing actual build"
-export PATH=$PATH:$CTOS_PREFIX/install/bin/
+export PATH=$PATH:$CTOS_PREFIX/sysroot/bin/
 cd $CTOS_PREFIX
 mkdir -p build/dash
 cd build/dash
-../../src/dash-0.5.8/configure --host=i686-pc-ctOS --prefix=$CTOS_PREFIX/install 
+../../src/dash-0.5.8/configure --host=i686-pc-ctOS --prefix=$CTOS_PREFIX/sysroot 
 make 
 echo "-------------------------------------------------------------------"
 echo "Done, executable dash should be in $CTOS_PREFIX/build/dash/src"
+if [ ! "x$CTOS_ROOT" = "x" ]
+then
+  mkdir -p $CTOS_ROOT/bin/import/bin
+  cp -v $CTOS_PREFIX/build/dash/src/dash $CTOS_ROOT/bin/import/bin
+  echo "I did also copy that to $CTOS_ROOT/bin/import/bin for you"
+  exit
+fi
+
 echo "-------------------------------------------------------------------"

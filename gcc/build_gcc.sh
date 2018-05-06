@@ -4,7 +4,7 @@
 # and apply the needed patches to adapt them for ctOS as a target
 #
 # This script will build in $CTOS_PREFIX/build and install in 
-# $CTOS_PREFIX/install. The patched source code will be placed in
+# $CTOS_PREFIX/sysroot. The patched source code will be placed in
 # $CTOS_PREFIX/src
 #
 # We also need CTOS_ROOT to point to a clone of the actual ctOS
@@ -32,7 +32,7 @@ fi
 if [ "x$CTOS_ROOT" = "x" ]
 then
   echo "It seems that the environment variable CTOS_ROOT is not set"
-  echo "Please make CTOS_PREFIX point to an existing clone of the ctOS"
+  echo "Please make CTOS_ROOT point to an existing clone of the ctOS"
   echo "repository (see github.com/christianb93/ctOS) in which a build"
   echo "has been done as I need to get some header files and libraries"
   echo "from there."
@@ -53,7 +53,7 @@ echo "-------------------------------------------------------------------"
 echo "I will use the following directories:"
 echo "Patched source will be placed in $CTOS_PREFIX/src/"
 echo "I will build in                  $CTOS_PREFIX/build"
-echo "I will install in                $CTOS_PREFIX/install"
+echo "I will install in                $CTOS_PREFIX/sysroot"
 echo "Sysroot will be                  $CTOS_PREFIX/sysroot"
 echo "All directories will be created if they do not exist yet"
 read -p "Ok and proceed? (Y/n): "
@@ -70,7 +70,6 @@ PATCH_DIR=$(dirname "$0")
 cd $CTOS_PREFIX
 mkdir -p src
 mkdir -p sysroot
-mkdir -p install
 cd src
 if [ ! -e "gcc-5.4.0.tar" ]
 then
@@ -91,10 +90,10 @@ mkdir -p $CTOS_PREFIX/sysroot/usr/include/sys/
 cp -v $CTOS_ROOT/include/lib/os/*.h $CTOS_PREFIX/sysroot/usr/include/os/
 cp -v $CTOS_ROOT/include/lib/sys/*.h $CTOS_PREFIX/sysroot/usr/include/sys/
 mkdir -p $CTOS_PREFIX/sysroot/lib/
-cp -v $CTOS_ROOT/lib/std/crt0.o ~/ctOS_toolchain/sysroot/lib/
-cp -v $CTOS_ROOT/lib/std/crti.o ~/ctOS_toolchain/sysroot/lib/
-cp -v $CTOS_ROOT/lib/std/crtn.o ~/ctOS_toolchain/sysroot/lib/
-cp -v $CTOS_ROOT/lib/std/libc.a ~/ctOS_toolchain/sysroot/lib/
+cp -v $CTOS_ROOT/lib/std/crt0.o $CTOS_PREFIX/sysroot/lib/
+cp -v $CTOS_ROOT/lib/std/crti.o $CTOS_PREFIX/sysroot/lib/
+cp -v $CTOS_ROOT/lib/std/crtn.o $CTOS_PREFIX/sysroot/lib/
+cp -v $CTOS_ROOT/lib/std/libc.a $CTOS_PREFIX/sysroot/lib/
 
 
 #
@@ -103,7 +102,7 @@ cp -v $CTOS_ROOT/lib/std/libc.a ~/ctOS_toolchain/sysroot/lib/
 cd $CTOS_PREFIX
 mkdir -p build/gcc
 cd build/gcc
-../../src/gcc-5.4.0/configure --target=i686-pc-ctOS --prefix=$CTOS_PREFIX/install --with-sysroot=$CTOS_PREFIX/sysroot --with-gnu-as --with-gnu-ld --enable-languages=c 2>&1 | tee build.log
+../../src/gcc-5.4.0/configure --target=i686-pc-ctOS --prefix=$CTOS_PREFIX/sysroot --with-sysroot=$CTOS_PREFIX/sysroot --with-gnu-as --with-gnu-ld --enable-languages=c 
 make -j 4
 make install
 echo "-------------------------------------------------------------------"

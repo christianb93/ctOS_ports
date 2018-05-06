@@ -1,0 +1,50 @@
+diff -c -r elvis-2.2.1/configure elvis-2.2.1_new/configure
+*** elvis-2.2.1/configure	2018-05-06 19:40:03.465479960 +0200
+--- elvis-2.2.1_new/configure	2018-05-06 19:52:38.683444611 +0200
+***************
+*** 66,72 ****
+  BINDIR='$(PREFIX)/bin'
+  DATADIR='$(PREFIX)/share/elvis/'
+  DOCDIR='$(PREFIX)/share/elvis/doc/'
+! SYS=""
+  DEFAULT_CC="cc -O"
+  IOCTL=""
+  WHY=""
+--- 66,72 ----
+  BINDIR='$(PREFIX)/bin'
+  DATADIR='$(PREFIX)/share/elvis/'
+  DOCDIR='$(PREFIX)/share/elvis/doc/'
+! SYS="ctOS"
+  DEFAULT_CC="cc -O"
+  IOCTL=""
+  WHY=""
+***************
+*** 688,693 ****
+--- 688,697 ----
+  	TLIBS="-ltermcap -lsocket"
+  	;;
+  
++   *ctOS*)
++ 	TLIBS="-lncurses"
++ 	;;
++ 
+    *osf*)
+  	why "OSF is configured to use the bogus 'tinytcap.c' file instead of a real termcap"
+  	why "    or terminfo library.  I don't know why.   It also tries to use -ltermcap"
+***************
+*** 1009,1015 ****
+   */
+  #define	DISPLAY_HEX	/* hex		interactive hex dump */
+  #define	DISPLAY_HTML	/* html		formatted text */
+! #define	DISPLAY_MAN	/* man		formatted text */
+  #define	DISPLAY_TEX	/* tex		formatted text */
+  #define	DISPLAY_SYNTAX	/* syntax	generic syntax coloring */
+  #${PROTOCOL_HTTP}	PROTOCOL_HTTP	/* define to enable HTTP; undef to disable */
+--- 1013,1019 ----
+   */
+  #define	DISPLAY_HEX	/* hex		interactive hex dump */
+  #define	DISPLAY_HTML	/* html		formatted text */
+! #undef	DISPLAY_MAN	/* man		formatted text */
+  #define	DISPLAY_TEX	/* tex		formatted text */
+  #define	DISPLAY_SYNTAX	/* syntax	generic syntax coloring */
+  #${PROTOCOL_HTTP}	PROTOCOL_HTTP	/* define to enable HTTP; undef to disable */
