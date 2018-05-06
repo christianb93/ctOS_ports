@@ -78,6 +78,7 @@ patch -p0 < $PATCH_DIR/dash.patch
 # Running actual build
 #
 echo "Doing actual build"
+export PATH=$PATH:$CTOS_PREFIX/install/bin/
 cd $CTOS_PREFIX
 mkdir -p build/dash
 cd build/dash
