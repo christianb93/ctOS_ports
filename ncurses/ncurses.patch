@@ -1,0 +1,60 @@
+diff -c -r ncurses-6.0+20160213/config.sub ncurses-6.0+20160213_new/config.sub
+*** ncurses-6.0+20160213/config.sub	2015-10-24 20:37:37.000000000 +0200
+--- ncurses-6.0+20160213_new/config.sub	2018-05-06 18:22:05.290143800 +0200
+***************
+*** 1531,1536 ****
+--- 1531,1538 ----
+  		;;
+  	-nacl*)
+  		;;
++ 	-ctOS*)
++ 		;;
+  	-none)
+  		;;
+  	*)
+diff -c -r ncurses-6.0+20160213/misc/Makefile.in ncurses-6.0+20160213_new/misc/Makefile.in
+*** ncurses-6.0+20160213/misc/Makefile.in	2015-11-01 21:01:20.000000000 +0100
+--- ncurses-6.0+20160213_new/misc/Makefile.in	2018-05-06 18:24:43.785804902 +0200
+***************
+*** 81,87 ****
+  
+  sources :: terminfo.tmp 
+  
+! install : @MISC_INSTALL_DATA@ install.libs
+  
+  install.data :	terminfo.tmp \
+  		$(DESTDIR)$(libdir) \
+--- 81,87 ----
+  
+  sources :: terminfo.tmp 
+  
+! install :  install.libs
+  
+  install.data :	terminfo.tmp \
+  		$(DESTDIR)$(libdir) \
+diff -c -r ncurses-6.0+20160213/misc/terminfo.src ncurses-6.0+20160213_new/misc/terminfo.src
+*** ncurses-6.0+20160213/misc/terminfo.src	2018-05-06 18:22:37.000000000 +0200
+--- ncurses-6.0+20160213_new/misc/terminfo.src	2018-05-06 18:22:05.298143778 +0200
+***************
+*** 21162,21167 ****
+--- 21162,21181 ----
+  	dch1=^X, dl1=^P^S, ed=\020\025\020\023\020\023, el=^P^U,
+  	home=^P^R, il1=^P^Z, ind=^J, pad=\177, rmcup=, rmir=^Pi,
+  	rmul=^P \0, smcup=\020\035$<20>, smir=^PI, smul=^P ^P,
++ ctos|ctOS console,
++ 	am, xenl,
++ 	colors#8, cols#80, it#8, lines#25, ncv#3, pairs#64,
++     	bel=^G, blink=\E[5m, bold=\E[1m, clear=\E[H\E[0J, cr=^M,
++     	cub=\E[%p1%dD, cub1=^H, cud=\E[%p1%dB, cud1=\E[B,
++     	cuf=\E[%p1%dC, cuf1=\E[C, cup=\E[%i%p1%d;%p2%dH,
++     	cuu=\E[%p1%dA, cuu1=\E[A, dch=\E[%p1%dP, dch1=\E[P,
++     	dl=\E[%p1%dM, dl1=\E[M, ed=\E[0J, el=\E[K, el1=\E[2K,
++     	home=\E[H, ht=^I, ich=\E[%p1%d@, ich1=\E[@, il=\E[%p1%dL,
++     	il1=\E[L, ind=^J, is2=\E[0m, kbs=^H, kcub1=\E[D, kcud1=\E[B,
++    	 kcuf1=\E[C, kcuu1=\E[A, nel=^J,
++     	op=\E[39;49m, rev=\E[7m, ri=\EM, rmso=\E[0m, rmul=\E[0m,
++     	setab=\E[4%p1%dm, setaf=\E[3%p1%dm, sgr0=\E[0m,
++     	smso=\E[7m, smul=\E[4m,
+  dtc300s|DTC 300s,
+  	hc, os,
+  	cols#132,
