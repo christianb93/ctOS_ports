@@ -44,7 +44,8 @@ then
     fi
 fi
 
-PATCH_DIR=$(dirname "$0")
+PATCH_DIR=`pwd`
+PATCH_DIR="$PATCH_DIR/$(dirname "$0")"
 cd $CTOS_PREFIX
 mkdir -p src
 mkdir -p sysroot
@@ -55,6 +56,7 @@ then
     gzip -d binutils-2.27.tar.gz
 fi
 tar xvf binutils-2.27.tar  
+echo "Using PATCH_DIR=$PATCH_DIR"
 patch -p0 < $PATCH_DIR/binutils.patch
 cd ..
 mkdir -p build/binutils

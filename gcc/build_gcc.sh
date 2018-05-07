@@ -65,7 +65,9 @@ then
     fi
 fi
 
-PATCH_DIR=$(dirname "$0")
+PATCH_DIR=`pwd`
+PATCH_DIR="$PATCH_DIR/$(dirname "$0")"
+
 
 #
 # Get sources and apply patches
@@ -80,6 +82,7 @@ then
     gzip -d gcc-5.4.0.tar.gz
 fi
 tar xvf gcc-5.4.0.tar  
+echo "Using PATCH_DIR=$PATCH_DIR"
 patch -p0 < $PATCH_DIR/gcc.patch
 cp $PATCH_DIR/ctOS.h $CTOS_PREFIX/src/gcc-5.4.0/gcc/config/i386/ctOS.h
 

@@ -74,20 +74,18 @@ fi
 
 REPO_DIR=$(dirname "$0")
 
+echo "Using REPO_DIR=$REPO_DIR"
 export CTOS_PREFIX
 export CTOS_ROOT
 export CTOS_BUILD_CONFIRM="Y"
 $REPO_DIR/binutils/build_binutils.sh
-$REPO_DIR/gcc/build_gcc.sh
+#$REPO_DIR/gcc/build_gcc.sh
 
 #
 # Now we do the actual ports
 #
-$REPO_DIR/dash/build_dash.sh
-$REPO_DIR/ncurses/build_ncurses.sh
-$REPO_DIR/elvis/build_elvis.sh
-$REPO_DIR/wget/build_wget.sh
+#$REPO_DIR/dash/build_dash.sh
+#$REPO_DIR/ncurses/build_ncurses.sh
+#$REPO_DIR/elvis/build_elvis.sh
+#$REPO_DIR/wget/build_wget.sh
 
-#
-# 
-#
