@@ -87,8 +87,12 @@ mkdir -p $CTOS_PREFIX/sysroot/usr/include
 cp -v  $CTOS_ROOT/include/lib/*.h $CTOS_PREFIX/sysroot/usr/include/
 mkdir -p $CTOS_PREFIX/sysroot/usr/include/os/
 mkdir -p $CTOS_PREFIX/sysroot/usr/include/sys/
+mkdir -p $CTOS_PREFIX/sysroot/usr/include/netinet
+mkdir -p $CTOS_PREFIX/sysroot/usr/include/arpa
 cp -v $CTOS_ROOT/include/lib/os/*.h $CTOS_PREFIX/sysroot/usr/include/os/
 cp -v $CTOS_ROOT/include/lib/sys/*.h $CTOS_PREFIX/sysroot/usr/include/sys/
+cp -v $CTOS_ROOT/include/lib/netinet/*.h $CTOS_PREFIX/sysroot/usr/include/netinet
+cp -v $CTOS_ROOT/include/lib/arpa/*.h $CTOS_PREFIX/sysroot/usr/include/arpa
 mkdir -p $CTOS_PREFIX/sysroot/lib/
 cp -v $CTOS_ROOT/lib/std/crt0.o $CTOS_PREFIX/sysroot/lib/
 cp -v $CTOS_ROOT/lib/std/crti.o $CTOS_PREFIX/sysroot/lib/
