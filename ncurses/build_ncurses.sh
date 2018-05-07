@@ -45,10 +45,13 @@ echo "I will build in                  $CTOS_PREFIX/build"
 echo "I will install in                $CTOS_PREFIX/sysroot"
 echo "Sysroot will be                  $CTOS_PREFIX/sysroot"
 echo "All directories will be created if they do not exist yet"
-read -p "Ok and proceed? (Y/n): "
-if [ "$REPLY" != "Y" ] ; then
-    echo "Exiting, but you can restart at any point in time."
-    exit
+if [ "x$CTOS_BUILD_CONFIRM" = "x" ]
+then
+    read -p "Ok and proceed? (Y/n): "
+    if [ "$REPLY" != "Y" ] ; then
+        echo "Exiting, but you can restart at any point in time."
+        exit
+    fi
 fi
 
 PATCH_DIR=$(dirname "$0")
