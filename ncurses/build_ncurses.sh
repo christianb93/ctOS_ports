@@ -54,8 +54,7 @@ then
     fi
 fi
 
-PATCH_DIR=`pwd`
-PATCH_DIR="$PATCH_DIR/$(dirname "$0")"
+PATCH_DIR="$( cd "$(dirname "$0")" ; pwd -P )"
 
 #
 # Get sources and apply patches
@@ -69,7 +68,12 @@ cd src
 #   apt-get source ncurses
 # would also work
 #
-git clone https://anonscm.debian.org/git/collab-maint/ncurses.git --branch upstream/6.0+20160213 --single-branch
+# git clone https://anonscm.debian.org/git/collab-maint/ncurses.git --branch upstream/6.0+20160213 --single-branch
+# 
+# This has moved at least once, check the .dsc file of the latest ncursed debian package for the current
+# location if this does not work
+#
+git clone https://salsa.debian.org/debian/ncurses.git --branch upstream/6.0+20160213 --single-branch
 mv ncurses ncurses-6.0+20160213
 patch -p0 < $PATCH_DIR/ncurses.patch
 

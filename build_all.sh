@@ -88,4 +88,5 @@ $REPO_DIR/dash/build_dash.sh
 $REPO_DIR/ncurses/build_ncurses.sh
 $REPO_DIR/elvis/build_elvis.sh
 $REPO_DIR/wget/build_wget.sh
+$REPO_DIR/coreutils/build_coreutils.sh
 

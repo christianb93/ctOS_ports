@@ -1,0 +1,228 @@
+diff -c -r -N coreutils-8.13/build-aux/config.sub coreutils-8.13_new/build-aux/config.sub
+*** coreutils-8.13/build-aux/config.sub	2011-08-28 09:36:41.000000000 +0200
+--- coreutils-8.13_new/build-aux/config.sub	2018-05-31 21:46:39.739521113 +0200
+***************
+*** 1485,1490 ****
+--- 1485,1492 ----
+  		;;
+  	-nacl*)
+  		;;
++     -ctOS*)
++         ;;
+  	-none)
+  		;;
+  	*)
+diff -c -r -N coreutils-8.13/lib/fpurge.c coreutils-8.13_new/lib/fpurge.c
+*** coreutils-8.13/lib/fpurge.c	2011-08-19 18:09:37.000000000 +0200
+--- coreutils-8.13_new/lib/fpurge.c	2018-05-31 22:03:45.156323906 +0200
+***************
+*** 26,31 ****
+--- 26,33 ----
+  
+  #include "stdio-impl.h"
+  
++ extern int __ctOS_stream_fpurge(FILE*);
++ 
+  int
+  fpurge (FILE *fp)
+  {
+***************
+*** 135,141 ****
+    fp->__put_limit = fp->__buffer;
+    return 0;
+  # else
+! #  error "Please port gnulib fpurge.c to your platform! Look at the definitions of fflush, setvbuf and ungetc on your system, then report this to bug-gnulib."
+  # endif
+  
+  #endif
+--- 137,143 ----
+    fp->__put_limit = fp->__buffer;
+    return 0;
+  # else
+!   return __ctOS_stream_fpurge(fp);
+  # endif
+  
+  #endif
+diff -c -r -N coreutils-8.13/lib/freadahead.c coreutils-8.13_new/lib/freadahead.c
+*** coreutils-8.13/lib/freadahead.c	2011-08-19 18:09:37.000000000 +0200
+--- coreutils-8.13_new/lib/freadahead.c	2018-05-31 21:54:22.076995452 +0200
+***************
+*** 22,27 ****
+--- 22,29 ----
+  #include <stdlib.h>
+  #include "stdio-impl.h"
+  
++ extern int __ctOS_stream_freadahead(FILE*);
++ 
+  size_t
+  freadahead (FILE *fp)
+  {
+***************
+*** 84,89 ****
+    abort ();
+    return 0;
+  #else
+!  #error "Please port gnulib freadahead.c to your platform! Look at the definition of fflush, fread, ungetc on your system, then report this to bug-gnulib."
+  #endif
+  }
+--- 86,91 ----
+    abort ();
+    return 0;
+  #else
+!  return __ctOS_stream_freadahead(fp);
+  #endif
+  }
+diff -c -r -N coreutils-8.13/lib/freading.c coreutils-8.13_new/lib/freading.c
+*** coreutils-8.13/lib/freading.c	2011-08-19 18:09:37.000000000 +0200
+--- coreutils-8.13_new/lib/freading.c	2018-05-31 21:56:25.607771625 +0200
+***************
+*** 19,24 ****
+--- 19,26 ----
+  /* Specification.  */
+  #include "freading.h"
+  
++ extern int __ctOS_stream_freading(FILE*);
++ 
+  #include "stdio-impl.h"
+  
+  /* Don't use glibc's __freading function in glibc < 2.7, see
+***************
+*** 63,69 ****
+    return (fp->__buffer < fp->__get_limit /*|| fp->__bufp == fp->__put_limit ??*/);
+  #  endif
+  # else
+! #  error "Please port gnulib freading.c to your platform!"
+  # endif
+  }
+  
+--- 65,71 ----
+    return (fp->__buffer < fp->__get_limit /*|| fp->__bufp == fp->__put_limit ??*/);
+  #  endif
+  # else
+!   return __ctOS_stream_freading(fp);
+  # endif
+  }
+  
+diff -c -r -N coreutils-8.13/lib/freadptr.c coreutils-8.13_new/lib/freadptr.c
+*** coreutils-8.13/lib/freadptr.c	2011-08-19 18:09:37.000000000 +0200
+--- coreutils-8.13_new/lib/freadptr.c	2018-05-31 21:57:54.294977689 +0200
+***************
+*** 23,28 ****
+--- 23,31 ----
+  
+  #include "stdio-impl.h"
+  
++ extern const char*  __ctOS_stream_freadptr(FILE*, size_t*);
++ 
++ 
+  const char *
+  freadptr (FILE *fp, size_t *sizep)
+  {
+***************
+*** 106,111 ****
+       awfully slow.  */
+    return NULL;
+  #else
+!  #error "Please port gnulib freadptr.c to your platform! Look at the definition of fflush, fread, getc, getc_unlocked on your system, then report this to bug-gnulib."
+  #endif
+  }
+--- 109,114 ----
+       awfully slow.  */
+    return NULL;
+  #else
+!  return __ctOS_stream_freadptr(fp, sizep);
+  #endif
+  }
+diff -c -r -N coreutils-8.13/lib/freadseek.c coreutils-8.13_new/lib/freadseek.c
+*** coreutils-8.13/lib/freadseek.c	2011-08-19 18:09:37.000000000 +0200
+--- coreutils-8.13_new/lib/freadseek.c	2018-05-31 21:59:28.498197809 +0200
+***************
+*** 27,32 ****
+--- 27,34 ----
+  
+  #include "stdio-impl.h"
+  
++ extern void __ctOS_stream_freadptrinc(FILE*, size_t);
++ 
+  /* Increment the in-memory pointer.  INCREMENT must be at most the buffer size
+     returned by freadptr().
+     This is very cheap (no system calls).  */
+***************
+*** 60,66 ****
+    fp->__bufp += increment;
+  #elif defined SLOW_BUT_NO_HACKS     /* users can define this */
+  #else
+!  #error "Please port gnulib freadseek.c to your platform! Look at the definition of getc, getc_unlocked on your system, then report this to bug-gnulib."
+  #endif
+  }
+  
+--- 62,68 ----
+    fp->__bufp += increment;
+  #elif defined SLOW_BUT_NO_HACKS     /* users can define this */
+  #else
+!   __ctOS_stream_freadptrinc(fp, increment);
+  #endif
+  }
+  
+diff -c -r -N coreutils-8.13/lib/fseeko.c coreutils-8.13_new/lib/fseeko.c
+*** coreutils-8.13/lib/fseeko.c	2011-08-12 10:05:46.000000000 +0200
+--- coreutils-8.13_new/lib/fseeko.c	2018-05-31 22:07:48.538779355 +0200
+***************
+*** 92,98 ****
+        && fp->__put_limit == fp->__bufp
+        && !fp->__pushed_back)
+  #else
+!   #error "Please port gnulib fseeko.c to your platform! Look at the code in fpurge.c, then report this to bug-gnulib."
+  #endif
+      {
+        /* We get here when an fflush() call immediately preceded this one (or
+--- 92,98 ----
+        && fp->__put_limit == fp->__bufp
+        && !fp->__pushed_back)
+  #else
+!   return fseeko(fp, offset, whence);
+  #endif
+      {
+        /* We get here when an fflush() call immediately preceded this one (or
+diff -c -r -N coreutils-8.13/lib/fseterr.c coreutils-8.13_new/lib/fseterr.c
+*** coreutils-8.13/lib/fseterr.c	2011-08-19 18:09:37.000000000 +0200
+--- coreutils-8.13_new/lib/fseterr.c	2018-05-31 22:01:40.673193423 +0200
+***************
+*** 23,28 ****
+--- 23,30 ----
+  
+  #include "stdio-impl.h"
+  
++ extern int __ctOS_stream_seterror(FILE*);
++ 
+  void
+  fseterr (FILE *fp)
+  {
+***************
+*** 71,76 ****
+      }
+    errno = saved_errno;
+  #else
+!  #error "Please port gnulib fseterr.c to your platform! Look at the definitions of ferror and clearerr on your system, then report this to bug-gnulib."
+  #endif
+  }
+--- 73,78 ----
+      }
+    errno = saved_errno;
+  #else
+!  __ctOS_stream_seterror(fp);
+  #endif
+  }
+diff -c -r -N coreutils-8.13/lib/stdio.in.h coreutils-8.13_new/lib/stdio.in.h
+*** coreutils-8.13/lib/stdio.in.h	2011-06-17 10:06:20.000000000 +0200
+--- coreutils-8.13_new/lib/stdio.in.h	2018-05-31 21:52:01.234602114 +0200
+***************
+*** 697,703 ****
+  /* It is very rare that the developer ever has full control of stdin,
+     so any use of gets warrants an unconditional warning.  Assume it is
+     always declared, since it is required by C89.  */
+- _GL_WARN_ON_USE (gets, "gets is a security hole - use fgets instead");
+  #endif
+  
+  
+--- 697,702 ----

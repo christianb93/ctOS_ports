@@ -54,9 +54,7 @@ then
     fi
 fi
 
-PATCH_DIR=`pwd`
-PATCH_DIR="$PATCH_DIR/$(dirname "$0")"
-
+PATCH_DIR="$( cd "$(dirname "$0")" ; pwd -P )"
 
 #
 # Get sources and apply patches

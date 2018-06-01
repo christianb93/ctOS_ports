@@ -37,7 +37,7 @@ then
 fi
 
 
-echo "Building elvis for ctOS"
+echo "Building wget for ctOS"
 echo "-------------------------------------------------------------------"
 echo "I will use the following directories:"
 echo "Patched source will be placed in $CTOS_PREFIX/src/"
@@ -54,9 +54,7 @@ then
     fi
 fi
 
-PATCH_DIR=`pwd`
-PATCH_DIR="$PATCH_DIR/$(dirname "$0")"
-
+PATCH_DIR="$( cd "$(dirname "$0")" ; pwd -P )"
 
 #
 # Get sources and apply patches

@@ -1,12 +1,15 @@
 #!/bin/bash
 #
-# This script will download the source code of the GNU binutils 
+# This script will download the source code of coreutils 
 # and apply the needed patches to adapt them for ctOS as a target
 #
 # This script will build in $CTOS_PREFIX/build and install in 
 # $CTOS_PREFIX/sysroot. The patched source code will be placed in
 # $CTOS_PREFIX/src
 #
+# Note that only a very small selected subset will be built
+#
+
 
 #
 # Check whether we have defined CTOS_PREFIX
@@ -16,7 +19,6 @@ then
   echo "It seems that the environment variable CTOS_PREFIX is not set"
   echo "This variable would tell me where I will be building and installing"
   echo "Please make CTOS_PREFIX point to an existing directory and try again"
-  echo "I personally use CTOS_PREFIX=$HOME/ctOS_sys"
   exit
 fi
 
@@ -27,7 +29,16 @@ then
   exit
 fi
 
-echo "Building binutils for ctOS"
+if [ ! -e "$CTOS_PREFIX/sysroot/bin/i686-pc-ctOS-gcc" ]
+then
+  echo "Are you sure that CTOS_PREFIX is set correctly and that you "
+  echo "have successfully built GCC there?"
+  echo "I did expect to find $CTOS_PREFIX/sysroot/bin/i686-pc-ctOS-gcc"
+  exit
+fi
+
+
+echo "Building a selected subset of coreutils for ctOS"
 echo "-------------------------------------------------------------------"
 echo "I will use the following directories:"
 echo "Patched source will be placed in $CTOS_PREFIX/src/"
@@ -46,25 +57,41 @@ fi
 
 PATCH_DIR="$( cd "$(dirname "$0")" ; pwd -P )"
 
+#
+# Get sources and apply patches
+#
+echo "Getting sources"
 cd $CTOS_PREFIX
 mkdir -p src
-mkdir -p sysroot
 cd src
-if [ ! -e "binutils-2.27.tar" ]
+if [ ! -e "coreutils_8.13.orig.tar" ]
 then
-    wget https://ftpmirror.gnu.org/binutils/binutils-2.27.tar.gz
-    gzip -d binutils-2.27.tar.gz
+    wget http://ubuntu-master.mirror.tudos.de/ubuntu/pool/main/c/coreutils/coreutils_8.13.orig.tar.gz
+    gzip -d coreutils_8.13.orig.tar.gz
 fi
-tar xvf binutils-2.27.tar  
-echo "Using PATCH_DIR=$PATCH_DIR"
-patch -p0 < $PATCH_DIR/binutils.patch
-cd ..
-mkdir -p build/binutils
-cd build/binutils
-../../src/binutils-2.27/configure --target=i686-pc-ctOS --prefix=$CTOS_PREFIX/sysroot --with-sysroot=/$CTOS_PREFIX/sysroot
-make
-make install
+tar xvf coreutils_8.13.orig.tar
+patch -p0 < $PATCH_DIR/coreutils.patch
 
+#
+# Running actual build
+#
+echo "Doing actual build"
+export PATH=$PATH:$CTOS_PREFIX/sysroot/bin/
+mkdir -p $CTOS_PREFIX/build/coreutils
+cd $CTOS_PREFIX/build/coreutils
+../../src/coreutils-8.13/configure --host=i686-pc-ctOS
+(cd lib ; make)
+(cd src ; make dircolors.h wheel-size.h wheel.h fs.h version.c version.h)
+(cd src; make ls cp cat echo env printenv dir)
 echo "-------------------------------------------------------------------"
-echo "Done"
+echo "Done, look for executables in $CTOS_PREFIX/build/coreutils/src"
+if [ ! "x$CTOS_ROOT" = "x" ]
+then
+  mkdir -p $CTOS_ROOT/bin/import/bin
+  (cd $CTOS_PREFIX/build/coreutils/src; cp -v ls  dir cp cat echo env printenv $CTOS_ROOT/bin/import/bin)
+  echo "I did also copy some files to $CTOS_ROOT/bin/import/bin for you"
+  exit
+fi
 echo "-------------------------------------------------------------------"
+
+
