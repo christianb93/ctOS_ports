@@ -82,13 +82,13 @@ cd $CTOS_PREFIX/build/coreutils
 ../../src/coreutils-8.13/configure --host=i686-pc-ctOS
 (cd lib ; make)
 (cd src ; make dircolors.h wheel-size.h wheel.h fs.h version.c version.h)
-(cd src; make ls cp cat echo env printenv dir)
+(cd src; make pwd ls  cp cat echo touch env printenv dir date dirname wc mkdir od)
 echo "-------------------------------------------------------------------"
 echo "Done, look for executables in $CTOS_PREFIX/build/coreutils/src"
 if [ ! "x$CTOS_ROOT" = "x" ]
 then
   mkdir -p $CTOS_ROOT/bin/import/bin
-  (cd $CTOS_PREFIX/build/coreutils/src; cp -v ls  dir cp cat echo env printenv $CTOS_ROOT/bin/import/bin)
+  (cd $CTOS_PREFIX/build/coreutils/src; cp -v pwd  ls  dir touch cp cat wc echo env printenv date dirname mkdir od $CTOS_ROOT/bin/import/bin)
   echo "I did also copy some files to $CTOS_ROOT/bin/import/bin for you"
   exit
 fi
