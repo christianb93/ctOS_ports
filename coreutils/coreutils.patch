@@ -226,3 +226,23 @@ diff -c -r -N coreutils-8.13/lib/stdio.in.h coreutils-8.13_new/lib/stdio.in.h
   
   
 --- 697,702 ----
+diff -r -c coreutils-8.13/src/sleep.c coreutils-8.13_new/src/sleep.c
+*** coreutils-8.13/src/sleep.c	2011-07-28 12:38:27.000000000 +0200
+--- coreutils-8.13_new/src/sleep.c	2018-06-02 15:27:12.689839641 +0200
+***************
+*** 144,150 ****
+    if (!ok)
+      usage (EXIT_FAILURE);
+  
+!   if (xnanosleep (seconds))
+      error (EXIT_FAILURE, errno, _("cannot read realtime clock"));
+  
+    exit (EXIT_SUCCESS);
+--- 144,150 ----
+    if (!ok)
+      usage (EXIT_FAILURE);
+  
+!   if (sleep (seconds))
+      error (EXIT_FAILURE, errno, _("cannot read realtime clock"));
+  
+    exit (EXIT_SUCCESS);
