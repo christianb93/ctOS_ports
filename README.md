@@ -19,6 +19,7 @@ Then, there are the actual applications and libraries which are patched versions
 * ncurses - a version of the curses library to control text based terminals
 * wget - this has been added as a showcase for the ctOS TCP/IP stack and allows you to download files from the web
 * coreutils - I haved ported a subset of the coreutils (ls, echo, cat, env, ....) to ctOS
+* Bywater Basic - this is a port of the open source Basic interpreter Bywater Basic to ctOS
 
 ## Prerequisites
 
