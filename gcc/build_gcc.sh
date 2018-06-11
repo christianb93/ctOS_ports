@@ -102,7 +102,7 @@ cp -v $CTOS_ROOT/lib/std/crt0.o $CTOS_PREFIX/sysroot/lib/
 cp -v $CTOS_ROOT/lib/std/crti.o $CTOS_PREFIX/sysroot/lib/
 cp -v $CTOS_ROOT/lib/std/crtn.o $CTOS_PREFIX/sysroot/lib/
 cp -v $CTOS_ROOT/lib/std/libc.a $CTOS_PREFIX/sysroot/lib/
-
+cp -v $CTOS_ROOT/lib/std/libm.a $CTOS_PREFIX/sysroot/lib/
 
 #
 # Running actual build

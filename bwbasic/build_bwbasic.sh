@@ -1,13 +1,12 @@
 #!/bin/bash
 #
-# This script will download the source code of coreutils 
+# This script will download the source code of Bywater basic
 # and apply the needed patches to adapt them for ctOS as a target
 #
 # This script will build in $CTOS_PREFIX/build and install in 
 # $CTOS_PREFIX/sysroot. The patched source code will be placed in
 # $CTOS_PREFIX/src
 #
-# Note that only a very small selected subset will be built
 #
 
 
@@ -38,7 +37,7 @@ then
 fi
 
 
-echo "Building a selected subset of coreutils for ctOS"
+echo "Building Bywater Basic for ctOS"
 echo "-------------------------------------------------------------------"
 echo "I will use the following directories:"
 echo "Patched source will be placed in $CTOS_PREFIX/src/"
@@ -58,38 +57,38 @@ fi
 PATCH_DIR="$( cd "$(dirname "$0")" ; pwd -P )"
 
 #
-# Get sources and apply patches
+# Prepare sources 
 #
 echo "Getting sources"
 cd $CTOS_PREFIX
 mkdir -p src
 cd src
-if [ ! -e "coreutils_8.13.orig.tar" ]
+if [ ! -e "bwbasic-3.20.zip" ]
 then
-    wget http://ubuntu-master.mirror.tudos.de/ubuntu/pool/main/c/coreutils/coreutils_8.13.orig.tar.gz
-    gzip -d coreutils_8.13.orig.tar.gz
+    echo "Please go to https://sourceforge.net/projects/bwbasic/, get version 3.20 of Bywater basic (bwbasic-3.20.zip) from there and copy it to $CTOS_PREFIX/src"
+    exit
 fi
-tar xvf coreutils_8.13.orig.tar
-patch -p0 < $PATCH_DIR/coreutils.patch
+mkdir -p bwbasic
+cd bwbasic
+unzip -o ../bwbasic-3.20.zip
 
 #
 # Running actual build
 #
 echo "Doing actual build"
-FILES="pwd ls rm mv cp cat echo touch env printenv dir sleep date dirname wc mkdir rmdir od uname arch"
 export PATH=$PATH:$CTOS_PREFIX/sysroot/bin/
-mkdir -p $CTOS_PREFIX/build/coreutils
-cd $CTOS_PREFIX/build/coreutils
-../../src/coreutils-8.13/configure --host=i686-pc-ctOS
-(cd lib ; make)
-(cd src ; make dircolors.h wheel-size.h wheel.h fs.h version.c version.h)
-(cd src; make $FILES )
+mkdir -p $CTOS_PREFIX/build/bwbasic
+cd $CTOS_PREFIX/build/bwbasic
+chmod 700 ../../src/bwbasic/configure
+dos2unix ../../src/bwbasic/configure
+CC=i686-pc-ctOS-gcc  ../../src/bwbasic/configure --host=i686-pc-ctOS
+make bwbasic
 echo "-------------------------------------------------------------------"
-echo "Done, look for executables in $CTOS_PREFIX/build/coreutils/src"
+echo "Done, look for executables in $CTOS_PREFIX/build/bwbasic"
 if [ ! "x$CTOS_ROOT" = "x" ]
 then
   mkdir -p $CTOS_ROOT/bin/import/bin
-  (cd $CTOS_PREFIX/build/coreutils/src; cp -v $FILES $CTOS_ROOT/bin/import/bin)
+  cp -v bwbasic $CTOS_ROOT/bin/import/bin/
   echo "I did also copy some files to $CTOS_ROOT/bin/import/bin for you"
   exit
 fi
